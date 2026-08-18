@@ -1,0 +1,73 @@
+{
+  "phase": "elt_final_write",
+  "raw_run_id": "pipeline-20260816T235754Z-866233e7",
+  "processing_run_id": "quality-20260817T001802Z-5e46a7b0",
+  "raw_count": 30000000,
+  "classification": {
+    "valid_count": 20994411,
+    "corrected_count": 6501781,
+    "quarantine_count": 2503808,
+    "classified_total": 30000000
+  },
+  "validated_write": {
+    "inserted_count": 27496192,
+    "updated_count": 0,
+    "unchanged_count": 0
+  },
+  "quarantine_write": {
+    "inserted_count": 2503808,
+    "updated_count": 0,
+    "unchanged_count": 0
+  },
+  "collection_counts": {
+    "orders_validated": 27496192,
+    "orders_quarantine_current_run": 2503808
+  },
+  "duplicates": {
+    "group_count": 207689,
+    "record_count": 417584
+  },
+  "error_code_counts": {
+    "CORRUPTED_ITEMS_JSON": 419906,
+    "MISSING_CUSTOMER_ID": 419474,
+    "EMAIL_INVALID_UNRECOVERABLE": 418709,
+    "DUPLICATE_ORDER_ID": 417584,
+    "MULTIPLE_CONFLICTING_ERRORS": 221255,
+    "INVALID_IMPOSSIBLE_DATE": 210524,
+    "STATUS_UNKNOWN": 210194,
+    "CURRENCY_UNKNOWN": 210190,
+    "PHONE_INVALID_UNRECOVERABLE": 210042,
+    "EMPTY_ITEMS": 209934,
+    "TOTAL_UNKNOWN_UNRECOVERABLE": 209432,
+    "MISSING_ORDER_ID": 209392
+  },
+  "correction_rule_counts": {
+    "ARABIC_DIGITS_TO_LATIN": 1670912,
+    "ARABIC_DECIMAL_SEPARATOR_NORMALIZED": 1336617,
+    "WHITESPACE_TRIMMED": 671538,
+    "PHONE_NORMALIZED_YE": 670062,
+    "DATE_NORMALIZED": 668151,
+    "EMAIL_REPEATED_SYMBOLS": 667720,
+    "ORDER_TOTAL_RECALCULATED": 500976,
+    "CURRENCY_NORMALIZED_YER": 334967,
+    "CURRENCY_SUFFIX_REMOVED": 333888,
+    "KNOWN_PRICE_WORD_TO_NUMBER": 333569,
+    "THOUSANDS_SEPARATOR_NORMALIZED": 333494,
+    "NEGATIVE_QTY_DERIVED": 210021,
+    "ITEM_TOTAL_RESIDUAL_DERIVED": 210018,
+    "ITEM_PRICE_RESIDUAL_DERIVED": 210018,
+    "STATUS_SYNONYM_NORMALIZED": 111094
+  },
+  "performance": {
+    "elapsed_seconds": 28965.1154,
+    "throughput_records_per_second": 1035.73
+  },
+  "consistency": {
+    "raw_equals_classified": true,
+    "matches_dry_run": null,
+    "dry_run_contract_used": false,
+    "raw_run_selection": "explicit",
+    "validated_count_correct": true,
+    "quarantine_count_correct": true
+  }
+}

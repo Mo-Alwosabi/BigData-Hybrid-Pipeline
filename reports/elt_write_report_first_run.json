@@ -1,0 +1,71 @@
+{
+  "phase": "elt_final_write",
+  "raw_run_id": "run-20260816T195634Z-2294f5ec",
+  "processing_run_id": "quality-20260816T224218Z-cc07ae14",
+  "raw_count": 100000,
+  "classification": {
+    "valid_count": 70002,
+    "corrected_count": 21697,
+    "quarantine_count": 8301,
+    "classified_total": 100000
+  },
+  "validated_write": {
+    "inserted_count": 91699,
+    "updated_count": 0,
+    "unchanged_count": 0
+  },
+  "quarantine_write": {
+    "inserted_count": 8301,
+    "updated_count": 0,
+    "unchanged_count": 0
+  },
+  "collection_counts": {
+    "orders_validated": 91699,
+    "orders_quarantine_current_run": 8301
+  },
+  "duplicates": {
+    "group_count": 661,
+    "record_count": 1333
+  },
+  "error_code_counts": {
+    "ID_CUSTOMER_MISSING": 1411,
+    "EMAIL_INVALID_UNRECOVERABLE": 1343,
+    "JSON_ITEMS_CORRUPTED": 1338,
+    "ID_ORDER_DUPLICATE": 1333,
+    "DATE_IMPOSSIBLE_INVALID": 722,
+    "ID_ORDER_MISSING": 721,
+    "STATUS_UNKNOWN": 718,
+    "CURRENCY_UNKNOWN": 713,
+    "ERRORS_CONFLICTING_MULTIPLE": 707,
+    "PHONE_INVALID_UNRECOVERABLE": 707,
+    "ITEMS_EMPTY": 677,
+    "TOTAL_UNKNOWN_UNRECOVERABLE": 674
+  },
+  "correction_rule_counts": {
+    "ARABIC_DIGITS_TO_LATIN": 5594,
+    "ARABIC_DECIMAL_SEPARATOR_NORMALIZED": 4432,
+    "PHONE_NORMALIZED_YE": 2324,
+    "DATE_NORMALIZED": 2277,
+    "EMAIL_REPEATED_SYMBOLS": 2217,
+    "WHITESPACE_TRIMMED": 2166,
+    "ORDER_TOTAL_RECALCULATED": 1641,
+    "CURRENCY_SUFFIX_REMOVED": 1146,
+    "THOUSANDS_SEPARATOR_NORMALIZED": 1129,
+    "CURRENCY_NORMALIZED_YER": 1118,
+    "KNOWN_PRICE_WORD_TO_NUMBER": 1080,
+    "ITEM_TOTAL_RESIDUAL_DERIVED": 683,
+    "ITEM_PRICE_RESIDUAL_DERIVED": 683,
+    "NEGATIVE_QTY_DERIVED": 674,
+    "STATUS_SYNONYM_NORMALIZED": 363
+  },
+  "performance": {
+    "elapsed_seconds": 36.011,
+    "throughput_records_per_second": 2776.93
+  },
+  "consistency": {
+    "raw_equals_classified": true,
+    "matches_dry_run": true,
+    "validated_count_correct": true,
+    "quarantine_count_correct": true
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "official_large_run_id": "pipeline-20260816T235754Z-866233e7",
+  "small_evidence_run_id": "run-20260816T195634Z-2294f5ec",
+  "mongodb": {
+    "database": "bigdata_midterm",
+    "large_raw_run_count": 30000000,
+    "small_raw_evidence_count": 100000,
+    "orders_raw_total": 30100000,
+    "orders_validated": 27496192,
+    "orders_quarantine": 2503808,
+    "orders_validated_100k_evidence": 91699,
+    "orders_quarantine_100k_evidence": 8301,
+    "unique_order_id_index": true
+  },
+  "large_classification": {
+    "raw": 30000000,
+    "valid": 20994411,
+    "corrected": 6501781,
+    "quarantined": 2503808,
+    "equation_pass": true
+  },
+  "small_100k_classification": {
+    "raw": 100000,
+    "valid": 70002,
+    "corrected": 21697,
+    "quarantined": 8301,
+    "equation_pass": true
+  },
+  "examples": {
+    "valid": {
+      "order_id": "طلب-2235511",
+      "quality_status": "valid"
+    },
+    "corrected": {
+      "order_id": "طلب-2235512",
+      "quality_status": "corrected",
+      "corrections": [
+        {
+          "field": "status",
+          "original_value": "  قيد الانتظار  ",
+          "corrected_value": "قيد الانتظار",
+          "rule_code": "WHITESPACE_TRIMMED"
+        }
+      ]
+    },
+    "quarantined": {
+      "quarantine_key": "pipeline-20260816T235754Z-866233e7:6a824e978e400913a6f8446d",
+      "error_codes": [
+        "DUPLICATE_ORDER_ID"
+      ],
+      "error_details": [
+        {
+          "code": "DUPLICATE_ORDER_ID",
+          "field": "order_id",
+          "value": "طلب-2192981",
+          "message": "order_id belongs to a genuinely conflicting duplicate group."
+        }
+      ],
+      "source_run_id": "pipeline-20260816T235754Z-866233e7"
+    }
+  },
+  "error_case_counts": {
+    "CORRUPTED_ITEMS_JSON": 419906,
+    "MISSING_CUSTOMER_ID": 419474,
+    "EMAIL_INVALID_UNRECOVERABLE": 418709,
+    "DUPLICATE_ORDER_ID": 417584,
+    "MULTIPLE_CONFLICTING_ERRORS": 221255,
+    "INVALID_IMPOSSIBLE_DATE": 210524,
+    "STATUS_UNKNOWN": 210194,
+    "CURRENCY_UNKNOWN": 210190,
+    "PHONE_INVALID_UNRECOVERABLE": 210042,
+    "EMPTY_ITEMS": 209934,
+    "TOTAL_UNKNOWN_UNRECOVERABLE": 209432,
+    "MISSING_ORDER_ID": 209392
+  }
+}

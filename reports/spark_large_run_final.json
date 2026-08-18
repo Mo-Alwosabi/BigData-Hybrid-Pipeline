@@ -1,0 +1,108 @@
+{
+  "phase": "phase_14c_large_pyspark_raw",
+  "mode": "production_raw_append",
+  "run_id": "pipeline-20260816T235754Z-866233e7",
+  "run_id_source": "external",
+  "input": {
+    "path": "D:\\lec5\\orders_huge_mixed_quality.csv",
+    "file_name": "orders_huge_mixed_quality.csv",
+    "file_size_bytes": 13264821500,
+    "file_size_mb": 12650.32
+  },
+  "engine": {
+    "engine_used": "pyspark",
+    "spark_version": "4.2.0",
+    "scala_version": "2.13.18",
+    "master": "local[*]",
+    "spark_ui": "http://127.0.0.1:4040",
+    "input_partitions": 99,
+    "output_partitions": 99,
+    "execution_mode": "large_streaming_no_cache",
+    "cache_enabled": false
+  },
+  "schema": {
+    "explicit": true,
+    "raw_fields_are_strings": true,
+    "source_columns": [
+      "order_id",
+      "order_date",
+      "status",
+      "customer_id",
+      "customer_name",
+      "customer_phone",
+      "customer_email",
+      "city",
+      "district",
+      "delivery_type",
+      "delivery_cost",
+      "payment_method",
+      "payment_status",
+      "payment_amount",
+      "currency",
+      "total_amount",
+      "items_json"
+    ],
+    "corrupt_record_field": "_corrupt_record"
+  },
+  "counts": {
+    "rows_read": 30000000,
+    "csv_corrupt_records": 0,
+    "mongo_run_count": 30000000,
+    "mongo_total_count": 30100000
+  },
+  "performance": {
+    "write_elapsed_seconds": 389.8158,
+    "total_elapsed_seconds": 636.5871,
+    "throughput_records_per_second": 47126.31
+  },
+  "connector_jars": [
+    "C:\\Users\\Raidan\\.m2\\repository\\org\\mongodb\\spark\\mongo-spark-connector_2.13\\11.1.0\\mongo-spark-connector_2.13-11.1.0.jar",
+    "C:\\Users\\Raidan\\.m2\\repository\\org\\mongodb\\mongodb-driver-sync\\5.1.4\\mongodb-driver-sync-5.1.4.jar",
+    "C:\\Users\\Raidan\\.m2\\repository\\org\\mongodb\\mongodb-driver-core\\5.1.4\\mongodb-driver-core-5.1.4.jar",
+    "C:\\Users\\Raidan\\.m2\\repository\\org\\mongodb\\bson\\5.1.4\\bson-5.1.4.jar",
+    "C:\\Users\\Raidan\\.m2\\repository\\org\\mongodb\\bson-record-codec\\5.1.4\\bson-record-codec-5.1.4.jar"
+  ],
+  "production_counts_before": {
+    "orders_raw": 100000,
+    "orders_validated": 91699,
+    "orders_quarantine": 8301
+  },
+  "production_counts_after": {
+    "orders_raw": 30100000,
+    "orders_validated": 91699,
+    "orders_quarantine": 8301
+  },
+  "production_unchanged": false,
+  "production_safety_pass": true,
+  "production_raw_mode": true,
+  "sample_document": {
+    "run_id": "pipeline-20260816T235754Z-866233e7",
+    "source_file": "orders_huge_mixed_quality.csv",
+    "source_path": "D:\\lec5\\orders_huge_mixed_quality.csv",
+    "source_row_number": null,
+    "source_row_number_available": false,
+    "ingested_at": "2026-08-16 23:58:11.383000",
+    "engine_used": "pyspark",
+    "spark_partition_id": 7,
+    "csv_corrupt_record": null,
+    "raw_record": {
+      "order_id": "طلب-2235511",
+      "order_date": "2025-04-12T08:25:00",
+      "status": "قيد الشحن",
+      "customer_id": "عميل-2135511",
+      "customer_name": "فاطمة أحمد",
+      "customer_phone": "700837484",
+      "customer_email": "user611133@example.com",
+      "city": "الحديدة",
+      "district": "الحصبة",
+      "delivery_type": "عادي",
+      "delivery_cost": "2000.0",
+      "payment_method": "نقدًا عند التسليم",
+      "payment_status": "بانتظار الدفع",
+      "payment_amount": "100500.0",
+      "currency": "YER",
+      "total_amount": "100500.0",
+      "items_json": "[{\"sku\":\"SKU-1009\",\"name\":\"شاحن سريع\",\"qty\":3,\"unit_price\":11500.0,\"total\":34500.0},{\"sku\":\"SKU-1009\",\"name\":\"شاحن سريع\",\"qty\":3,\"unit_price\":8500.0,\"total\":25500.0},{\"sku\":\"SKU-1005\",\"name\":\"سماعات رأس\",\"qty\":1,\"unit_price\":38500.0,\"total\":38500.0}]"
+    }
+  }
+}

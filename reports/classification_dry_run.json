@@ -1,0 +1,332 @@
+{
+  "phase": "classification_dry_run",
+  "mode": "read_only",
+  "generated_at": "2026-08-18T14:05:51.764806+00:00",
+  "run_id": "run-20260818T140034Z-2ef69715",
+  "raw_count": 100000,
+  "classification": {
+    "valid_count": 70002,
+    "corrected_count": 21697,
+    "quarantine_count": 8301,
+    "classified_total": 100000
+  },
+  "consistency": {
+    "raw_equals_classified": true,
+    "duplicate_records_expected": 1333,
+    "duplicate_records_seen": 1333,
+    "validated_unchanged": true,
+    "quarantine_unchanged": true
+  },
+  "duplicates": {
+    "group_count": 661,
+    "record_count": 1333,
+    "group_size_distribution": {
+      "2": 651,
+      "3": 9,
+      "4": 1
+    }
+  },
+  "error_code_counts": {
+    "MISSING_CUSTOMER_ID": 1411,
+    "EMAIL_INVALID_UNRECOVERABLE": 1343,
+    "CORRUPTED_ITEMS_JSON": 1338,
+    "DUPLICATE_ORDER_ID": 1333,
+    "INVALID_IMPOSSIBLE_DATE": 722,
+    "MISSING_ORDER_ID": 721,
+    "STATUS_UNKNOWN": 718,
+    "CURRENCY_UNKNOWN": 713,
+    "MULTIPLE_CONFLICTING_ERRORS": 707,
+    "PHONE_INVALID_UNRECOVERABLE": 707,
+    "EMPTY_ITEMS": 677,
+    "TOTAL_UNKNOWN_UNRECOVERABLE": 674
+  },
+  "correction_rule_counts": {
+    "ARABIC_DIGITS_TO_LATIN": 5594,
+    "ARABIC_DECIMAL_SEPARATOR_NORMALIZED": 4432,
+    "PHONE_NORMALIZED_YE": 2324,
+    "DATE_NORMALIZED": 2277,
+    "EMAIL_REPEATED_SYMBOLS": 2217,
+    "WHITESPACE_TRIMMED": 2166,
+    "ORDER_TOTAL_RECALCULATED": 1641,
+    "CURRENCY_SUFFIX_REMOVED": 1146,
+    "THOUSANDS_SEPARATOR_NORMALIZED": 1129,
+    "CURRENCY_NORMALIZED_YER": 1118,
+    "KNOWN_PRICE_WORD_TO_NUMBER": 1080,
+    "ITEM_TOTAL_RESIDUAL_DERIVED": 683,
+    "ITEM_PRICE_RESIDUAL_DERIVED": 683,
+    "NEGATIVE_QTY_DERIVED": 674,
+    "STATUS_SYNONYM_NORMALIZED": 363
+  },
+  "error_combination_counts": {
+    "DUPLICATE_ORDER_ID": 1299,
+    "MISSING_CUSTOMER_ID": 734,
+    "MISSING_ORDER_ID": 721,
+    "INVALID_IMPOSSIBLE_DATE": 718,
+    "STATUS_UNKNOWN": 716,
+    "CURRENCY_UNKNOWN": 706,
+    "PHONE_INVALID_UNRECOVERABLE": 702,
+    "CORRUPTED_ITEMS_JSON + EMAIL_INVALID_UNRECOVERABLE + MISSING_CUSTOMER_ID + MULTIPLE_CONFLICTING_ERRORS + TOTAL_UNKNOWN_UNRECOVERABLE": 673,
+    "EMPTY_ITEMS": 672,
+    "EMAIL_INVALID_UNRECOVERABLE": 667,
+    "CORRUPTED_ITEMS_JSON": 659,
+    "CURRENCY_UNKNOWN + DUPLICATE_ORDER_ID + MULTIPLE_CONFLICTING_ERRORS": 7,
+    "DUPLICATE_ORDER_ID + MULTIPLE_CONFLICTING_ERRORS + PHONE_INVALID_UNRECOVERABLE": 5,
+    "DUPLICATE_ORDER_ID + EMPTY_ITEMS + MULTIPLE_CONFLICTING_ERRORS": 5,
+    "CORRUPTED_ITEMS_JSON + DUPLICATE_ORDER_ID + MULTIPLE_CONFLICTING_ERRORS": 5,
+    "DUPLICATE_ORDER_ID + INVALID_IMPOSSIBLE_DATE + MULTIPLE_CONFLICTING_ERRORS": 4,
+    "DUPLICATE_ORDER_ID + MISSING_CUSTOMER_ID + MULTIPLE_CONFLICTING_ERRORS": 3,
+    "DUPLICATE_ORDER_ID + EMAIL_INVALID_UNRECOVERABLE + MULTIPLE_CONFLICTING_ERRORS": 2,
+    "DUPLICATE_ORDER_ID + MULTIPLE_CONFLICTING_ERRORS + STATUS_UNKNOWN": 2,
+    "CORRUPTED_ITEMS_JSON + DUPLICATE_ORDER_ID + EMAIL_INVALID_UNRECOVERABLE + MISSING_CUSTOMER_ID + MULTIPLE_CONFLICTING_ERRORS + TOTAL_UNKNOWN_UNRECOVERABLE": 1
+  },
+  "corrections_per_record": {
+    "0": 78131,
+    "1": 16211,
+    "2": 5658
+  },
+  "errors_per_record": {
+    "0": 91699,
+    "1": 7594,
+    "3": 33,
+    "5": 673,
+    "6": 1
+  },
+  "performance": {
+    "elapsed_seconds": 4.9984,
+    "throughput_records_per_second": 20006.59
+  },
+  "samples": {
+    "valid": [
+      {
+        "source_row_number": 3,
+        "order_id": "طلب-100001",
+        "customer_id": "عميل-1",
+        "status": "قيد الانتظار",
+        "quality_status": "valid"
+      },
+      {
+        "source_row_number": 4,
+        "order_id": "طلب-100002",
+        "customer_id": "عميل-2",
+        "status": "مؤكد",
+        "quality_status": "valid"
+      },
+      {
+        "source_row_number": 6,
+        "order_id": "طلب-100004",
+        "customer_id": "عميل-4",
+        "status": "قيد الشحن",
+        "quality_status": "valid"
+      },
+      {
+        "source_row_number": 7,
+        "order_id": "طلب-100005",
+        "customer_id": "عميل-5",
+        "status": "مرتجع",
+        "quality_status": "valid"
+      },
+      {
+        "source_row_number": 9,
+        "order_id": "طلب-100007",
+        "customer_id": "عميل-7",
+        "status": "قيد الشحن",
+        "quality_status": "valid"
+      }
+    ],
+    "corrected": [
+      {
+        "source_row_number": 2,
+        "order_id": "طلب-100000",
+        "quality_status": "corrected",
+        "correction_count": 1,
+        "corrections": [
+          {
+            "field": "items_json[0].qty",
+            "original_value": -2,
+            "corrected_value": 3,
+            "rule_code": "NEGATIVE_QTY_DERIVED",
+            "details": "Derived as item_total / unit_price and corroborated by order total."
+          }
+        ]
+      },
+      {
+        "source_row_number": 5,
+        "order_id": "طلب-100003",
+        "quality_status": "corrected",
+        "correction_count": 2,
+        "corrections": [
+          {
+            "field": "total_amount",
+            "original_value": "٧٠٦٠٠٠٫٠",
+            "corrected_value": 706000,
+            "rule_code": "ARABIC_DIGITS_TO_LATIN"
+          },
+          {
+            "field": "total_amount",
+            "original_value": "٧٠٦٠٠٠٫٠",
+            "corrected_value": 706000,
+            "rule_code": "ARABIC_DECIMAL_SEPARATOR_NORMALIZED"
+          }
+        ]
+      },
+      {
+        "source_row_number": 12,
+        "order_id": "طلب-100010",
+        "quality_status": "corrected",
+        "correction_count": 1,
+        "corrections": [
+          {
+            "field": "total_amount",
+            "original_value": "135,000.00",
+            "corrected_value": 135000,
+            "rule_code": "THOUSANDS_SEPARATOR_NORMALIZED"
+          }
+        ]
+      },
+      {
+        "source_row_number": 14,
+        "order_id": "طلب-100012",
+        "quality_status": "corrected",
+        "correction_count": 1,
+        "corrections": [
+          {
+            "field": "customer_email",
+            "original_value": "user819896@@example.com",
+            "corrected_value": "user819896@example.com",
+            "rule_code": "EMAIL_REPEATED_SYMBOLS"
+          }
+        ]
+      },
+      {
+        "source_row_number": 18,
+        "order_id": "طلب-100016",
+        "quality_status": "corrected",
+        "correction_count": 1,
+        "corrections": [
+          {
+            "field": "customer_email",
+            "original_value": "user100791@@example.com",
+            "corrected_value": "user100791@example.com",
+            "rule_code": "EMAIL_REPEATED_SYMBOLS"
+          }
+        ]
+      }
+    ],
+    "quarantined": [
+      {
+        "source_row_number": 8,
+        "order_id": "طلب-100006",
+        "quality_status": "quarantined",
+        "codes_error": [
+          "MISSING_CUSTOMER_ID",
+          "EMAIL_INVALID_UNRECOVERABLE",
+          "CORRUPTED_ITEMS_JSON",
+          "TOTAL_UNKNOWN_UNRECOVERABLE",
+          "MULTIPLE_CONFLICTING_ERRORS"
+        ],
+        "details_error": [
+          {
+            "code": "MISSING_CUSTOMER_ID",
+            "field": "customer_id",
+            "value": "",
+            "message": "Customer ID is missing and cannot be inferred."
+          },
+          {
+            "code": "EMAIL_INVALID_UNRECOVERABLE",
+            "field": "customer_email",
+            "value": "@@",
+            "message": "Email cannot be repaired deterministically."
+          },
+          {
+            "code": "CORRUPTED_ITEMS_JSON",
+            "field": "items_json",
+            "value": "not-json",
+            "message": "items_json cannot be parsed."
+          },
+          {
+            "code": "TOTAL_UNKNOWN_UNRECOVERABLE",
+            "field": "total_amount",
+            "value": "???",
+            "message": "Order total is unknown and required components are unusable."
+          },
+          {
+            "code": "MULTIPLE_CONFLICTING_ERRORS",
+            "field": "_record",
+            "value": null,
+            "message": "Multiple substantial errors prevent a single safe correction path."
+          }
+        ]
+      },
+      {
+        "source_row_number": 15,
+        "order_id": "طلب-100013",
+        "quality_status": "quarantined",
+        "codes_error": [
+          "DUPLICATE_ORDER_ID"
+        ],
+        "details_error": [
+          {
+            "code": "DUPLICATE_ORDER_ID",
+            "field": "order_id",
+            "value": "طلب-100013",
+            "message": "order_id belongs to a genuinely conflicting duplicate group."
+          }
+        ]
+      },
+      {
+        "source_row_number": 21,
+        "order_id": "طلب-100019",
+        "quality_status": "quarantined",
+        "codes_error": [
+          "DUPLICATE_ORDER_ID"
+        ],
+        "details_error": [
+          {
+            "code": "DUPLICATE_ORDER_ID",
+            "field": "order_id",
+            "value": "طلب-100019",
+            "message": "order_id belongs to a genuinely conflicting duplicate group."
+          }
+        ]
+      },
+      {
+        "source_row_number": 26,
+        "order_id": "طلب-100024",
+        "quality_status": "quarantined",
+        "codes_error": [
+          "DUPLICATE_ORDER_ID"
+        ],
+        "details_error": [
+          {
+            "code": "DUPLICATE_ORDER_ID",
+            "field": "order_id",
+            "value": "طلب-100024",
+            "message": "order_id belongs to a genuinely conflicting duplicate group."
+          }
+        ]
+      },
+      {
+        "source_row_number": 27,
+        "order_id": "طلب-100025",
+        "quality_status": "quarantined",
+        "codes_error": [
+          "DUPLICATE_ORDER_ID"
+        ],
+        "details_error": [
+          {
+            "code": "DUPLICATE_ORDER_ID",
+            "field": "order_id",
+            "value": "طلب-100025",
+            "message": "order_id belongs to a genuinely conflicting duplicate group."
+          }
+        ]
+      }
+    ]
+  },
+  "mongo_collection_counts": {
+    "validated_before": 0,
+    "validated_after": 0,
+    "quarantine_before": 0,
+    "quarantine_after": 0
+  }
+}

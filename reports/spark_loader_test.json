@@ -1,0 +1,107 @@
+{
+  "phase": "phase_14a_pyspark_raw_test",
+  "mode": "isolated_temp_collection",
+  "run_id": "spark-20260818T200915Z-f65584c4",
+  "run_id_source": "generated",
+  "input": {
+    "path": "C:\\Users\\legion\\OneDrive\\Desktop\\BigData_Hybrid_Pipeline\\data\\samples\\orders_small_sample.csv",
+    "file_name": "orders_small_sample.csv",
+    "file_size_bytes": 43793939,
+    "file_size_mb": 41.77
+  },
+  "engine": {
+    "engine_used": "pyspark",
+    "spark_version": "4.0.1",
+    "scala_version": "2.13.16",
+    "master": "local[*]",
+    "spark_ui": "http://10.2.0.2:4040",
+    "input_partitions": 11,
+    "output_partitions": 11,
+    "execution_mode": "small_validation_cache",
+    "cache_enabled": true
+  },
+  "schema": {
+    "explicit": true,
+    "raw_fields_are_strings": true,
+    "source_columns": [
+      "order_id",
+      "order_date",
+      "status",
+      "customer_id",
+      "customer_name",
+      "customer_phone",
+      "customer_email",
+      "city",
+      "district",
+      "delivery_type",
+      "delivery_cost",
+      "payment_method",
+      "payment_status",
+      "payment_amount",
+      "currency",
+      "total_amount",
+      "items_json"
+    ],
+    "corrupt_record_field": "_corrupt_record"
+  },
+  "counts": {
+    "rows_read": 100000,
+    "csv_corrupt_records": 0,
+    "mongo_run_count": 100000,
+    "mongo_total_count": 100000
+  },
+  "performance": {
+    "write_elapsed_seconds": 1.4465,
+    "total_elapsed_seconds": 207.2677,
+    "throughput_records_per_second": 482.47
+  },
+  "connector_jars": [
+    "C:\\Users\\legion\\.ivy2\\jars\\mongo-spark-connector_2.13-11.1.0.jar",
+    "C:\\Users\\legion\\.ivy2\\jars\\mongodb-driver-sync-5.4.0.jar",
+    "C:\\Users\\legion\\.ivy2\\jars\\mongodb-driver-core-5.4.0.jar",
+    "C:\\Users\\legion\\.ivy2\\jars\\bson-5.4.0.jar"
+  ],
+  "production_counts_before": {
+    "orders_raw": 60200000,
+    "orders_validated": 27496497,
+    "orders_quarantine": 5024218
+  },
+  "production_counts_after": {
+    "orders_raw": 60200000,
+    "orders_validated": 27496497,
+    "orders_quarantine": 5024218
+  },
+  "production_unchanged": true,
+  "production_safety_pass": true,
+  "production_raw_mode": false,
+  "sample_document": {
+    "run_id": "spark-20260818T200915Z-f65584c4",
+    "source_file": "orders_small_sample.csv",
+    "source_path": "C:\\Users\\legion\\OneDrive\\Desktop\\BigData_Hybrid_Pipeline\\data\\samples\\orders_small_sample.csv",
+    "source_row_number": null,
+    "source_row_number_available": false,
+    "ingested_at": "2026-08-18 20:11:08.340000",
+    "engine_used": "pyspark",
+    "spark_partition_id": 5,
+    "csv_corrupt_record": null,
+    "raw_record": {
+      "order_id": "طلب-147903",
+      "order_date": "2025-03-22T08:57:00",
+      "status": "قيد الشحن",
+      "customer_id": "عميل-47903",
+      "customer_name": "محمد علي",
+      "customer_phone": "731366607",
+      "customer_email": "user987879@@example.com",
+      "city": "عمران",
+      "district": "جبلة",
+      "delivery_type": "عادي",
+      "delivery_cost": "2000.0",
+      "payment_method": "بطاقة",
+      "payment_status": "بانتظار الدفع",
+      "payment_amount": "38000.0",
+      "currency": "YER",
+      "total_amount": "38000.0",
+      "items_json": "[{\"sku\":\"SKU-1009\",\"name\":\"شاحن سريع\",\"qty\":3,\"unit_price\":12000.0,\"total\":36000.0}]"
+    }
+  }
+}

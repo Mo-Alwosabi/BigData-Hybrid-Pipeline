@@ -1,0 +1,128 @@
+{
+  "project": "Hybrid Big Data Orders Pipeline",
+  "assignment_mode": "individual_core_requirements",
+  "router": {
+    "threshold_mb": 200,
+    "small_engine": "python_batch",
+    "large_engine": "pyspark",
+    "threshold_reason": "Configurable boundary. The 41.77 MB reproducible sample uses Python Batch, while the 12,650.32 MB source uses PySpark."
+  },
+  "runs": {
+    "small_python_batch": {
+      "run_id": "run-20260816T195634Z-2294f5ec",
+      "file_name": "orders_small_sample.csv",
+      "file_size_mb": 41.77,
+      "engine_used": "python_batch",
+      "rows_read": 100000,
+      "raw_loaded": 100000,
+      "valid_count": 70002,
+      "corrected_count": 21697,
+      "quarantine_count": 8301,
+      "elapsed_seconds": 64.884,
+      "throughput": 1541.21,
+      "batch_size": 5000,
+      "partitions": null,
+      "error_case_counts": {
+        "MISSING_CUSTOMER_ID": 1411,
+        "EMAIL_INVALID_UNRECOVERABLE": 1343,
+        "CORRUPTED_ITEMS_JSON": 1338,
+        "DUPLICATE_ORDER_ID": 1333,
+        "INVALID_IMPOSSIBLE_DATE": 722,
+        "MISSING_ORDER_ID": 721,
+        "STATUS_UNKNOWN": 718,
+        "CURRENCY_UNKNOWN": 713,
+        "MULTIPLE_CONFLICTING_ERRORS": 707,
+        "PHONE_INVALID_UNRECOVERABLE": 707,
+        "EMPTY_ITEMS": 677,
+        "TOTAL_UNKNOWN_UNRECOVERABLE": 674
+      },
+      "inserted_count": 91699,
+      "updated_count": 0,
+      "unchanged_count": 0,
+      "raw_load_performance": {
+        "elapsed_seconds": 28.873,
+        "throughput_records_per_second": 3463.47,
+        "batches": 20
+      },
+      "quality_elt_performance": {
+        "elapsed_seconds": 36.011,
+        "throughput_records_per_second": 2776.93
+      },
+      "final_collections_first_run": {
+        "validated": 91699,
+        "quarantine": 8301
+      }
+    },
+    "large_pyspark": {
+      "run_id": "pipeline-20260816T235754Z-866233e7",
+      "file_name": "orders_huge_mixed_quality.csv",
+      "file_size_mb": 12650.32,
+      "engine_used": "pyspark",
+      "rows_read": 30000000,
+      "raw_loaded": 30000000,
+      "valid_count": 20994411,
+      "corrected_count": 6501781,
+      "quarantine_count": 2503808,
+      "elapsed_seconds": 29601.7,
+      "throughput": 1013.46,
+      "batch_size": null,
+      "partitions": 99,
+      "error_case_counts": {
+        "CORRUPTED_ITEMS_JSON": 419906,
+        "MISSING_CUSTOMER_ID": 419474,
+        "EMAIL_INVALID_UNRECOVERABLE": 418709,
+        "DUPLICATE_ORDER_ID": 417584,
+        "MULTIPLE_CONFLICTING_ERRORS": 221255,
+        "INVALID_IMPOSSIBLE_DATE": 210524,
+        "STATUS_UNKNOWN": 210194,
+        "CURRENCY_UNKNOWN": 210190,
+        "PHONE_INVALID_UNRECOVERABLE": 210042,
+        "EMPTY_ITEMS": 209934,
+        "TOTAL_UNKNOWN_UNRECOVERABLE": 209432,
+        "MISSING_ORDER_ID": 209392
+      },
+      "inserted_count": 27496192,
+      "updated_count": 0,
+      "unchanged_count": 0,
+      "csv_corrupt_records": 0,
+      "raw_load_performance": {
+        "elapsed_seconds": 636.5871,
+        "write_elapsed_seconds": 389.8158,
+        "throughput_records_per_second": 47126.31,
+        "input_partitions": 99,
+        "output_partitions": 99
+      },
+      "quality_elt_performance": {
+        "elapsed_seconds": 28965.1154,
+        "throughput_records_per_second": 1035.73
+      },
+      "final_collections": {
+        "validated": 27496192,
+        "quarantine": 2503808
+      }
+    }
+  },
+  "consistency": {
+    "small": {
+      "equation": "100000 = 70002 + 21697 + 8301",
+      "pass": true
+    },
+    "large": {
+      "equation": "30000000 = 20994411 + 6501781 + 2503808",
+      "pass": true
+    }
+  },
+  "idempotency_upsert_evidence": {
+    "idempotency_report": "reports/elt_write_report_final_idempotency.json",
+    "upsert_update_report": "reports/upsert_update_proof.json",
+    "same_input_no_duplicate": true,
+    "single_record_update_proof": true
+  },
+  "evidence_preservation": {
+    "small_validated_archive": "orders_validated_100k_evidence",
+    "small_quarantine_archive": "orders_quarantine_100k_evidence",
+    "large_spark_report": "reports/spark_large_run_final.json",
+    "large_elt_report": "reports/elt_write_report_large_30m_final.json",
+    "verification_report": "reports/final_verification.json"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "phase": "phase_14c_large_pyspark_raw",
+  "mode": "production_raw_append",
+  "run_id": "pipeline-20260818T152948Z-98c6367d",
+  "run_id_source": "external",
+  "input": {
+    "path": "C:\\Users\\legion\\OneDrive\\Desktop\\BD\\lec5\\orders_huge_mixed_quality.csv",
+    "file_name": "orders_huge_mixed_quality.csv",
+    "file_size_bytes": 13264821500,
+    "file_size_mb": 12650.32
+  },
+  "engine": {
+    "engine_used": "pyspark",
+    "spark_version": "4.0.1",
+    "scala_version": "2.13.16",
+    "master": "local[*]",
+    "spark_ui": "http://kubernetes.docker.internal:4040",
+    "input_partitions": 99,
+    "output_partitions": 99,
+    "execution_mode": "large_streaming_no_cache",
+    "cache_enabled": false
+  },
+  "schema": {
+    "explicit": true,
+    "raw_fields_are_strings": true,
+    "source_columns": [
+      "order_id",
+      "order_date",
+      "status",
+      "customer_id",
+      "customer_name",
+      "customer_phone",
+      "customer_email",
+      "city",
+      "district",
+      "delivery_type",
+      "delivery_cost",
+      "payment_method",
+      "payment_status",
+      "payment_amount",
+      "currency",
+      "total_amount",
+      "items_json"
+    ],
+    "corrupt_record_field": "_corrupt_record"
+  },
+  "counts": {
+    "rows_read": 30000000,
+    "csv_corrupt_records": 0,
+    "mongo_run_count": 30000000,
+    "mongo_total_count": 60200000
+  },
+  "performance": {
+    "write_elapsed_seconds": 91.5077,
+    "total_elapsed_seconds": 502.0665,
+    "throughput_records_per_second": 59753.04
+  },
+  "connector_jars": [
+    "C:\\Users\\legion\\.ivy2\\jars\\mongo-spark-connector_2.13-11.1.0.jar",
+    "C:\\Users\\legion\\.ivy2\\jars\\mongodb-driver-sync-5.4.0.jar",
+    "C:\\Users\\legion\\.ivy2\\jars\\mongodb-driver-core-5.4.0.jar",
+    "C:\\Users\\legion\\.ivy2\\jars\\bson-5.4.0.jar"
+  ],
+  "production_counts_before": {
+    "orders_raw": 30200000,
+    "orders_validated": 91699,
+    "orders_quarantine": 16602
+  },
+  "production_counts_after": {
+    "orders_raw": 60200000,
+    "orders_validated": 91699,
+    "orders_quarantine": 16602
+  },
+  "production_unchanged": false,
+  "production_safety_pass": true,
+  "production_raw_mode": true,
+  "sample_document": {
+    "run_id": "pipeline-20260818T152948Z-98c6367d",
+    "source_file": "orders_huge_mixed_quality.csv",
+    "source_path": "C:\\Users\\legion\\OneDrive\\Desktop\\BD\\lec5\\orders_huge_mixed_quality.csv",
+    "source_row_number": null,
+    "source_row_number_available": false,
+    "ingested_at": "2026-08-18 15:31:17.345000",
+    "engine_used": "pyspark",
+    "spark_partition_id": 25,
+    "csv_corrupt_record": null,
+    "raw_record": {
+      "order_id": "طلب-7715571",
+      "order_date": "2025-02-02T14:13:00",
+      "status": "ملغي",
+      "customer_id": "عميل-7615571",
+      "customer_name": "أحمد محمد",
+      "customer_phone": "775940759",
+      "customer_email": "user619213@example.com",
+      "city": "ذمار",
+      "district": "كريتر",
+      "delivery_type": "عادي",
+      "delivery_cost": "2000.0",
+      "payment_method": "نقدًا عند التسليم",
+      "payment_status": "بانتظار الدفع",
+      "payment_amount": "218500.0",
+      "currency": "YER",
+      "total_amount": "218500.0",
+      "items_json": "[{\"sku\":\"SKU-1007\",\"name\":\"قرص SSD محمول\",\"qty\":2,\"unit_price\":89500.0,\"total\":179000.0},{\"sku\":\"SKU-1009\",\"name\":\"شاحن سريع\",\"qty\":1,\"unit_price\":9000.0,\"total\":9000.0},{\"sku\":\"SKU-1009\",\"name\":\"شاحن سريع\",\"qty\":3,\"unit_price\":9500.0,\"total\":28500.0}]"
+    }
+  }
+}

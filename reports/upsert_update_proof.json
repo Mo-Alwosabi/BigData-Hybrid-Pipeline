@@ -1,0 +1,28 @@
+{
+  "phase": "phase_13b_upsert_update_proof",
+  "mode": "isolated_temporary_collection",
+  "source_collection": "orders_validated",
+  "temporary_collection": "_upsert_update_proof_temp",
+  "business_key": "order_id",
+  "order_id": "100039",
+  "first_upsert": {
+    "upserted_count": 1,
+    "matched_count": 0,
+    "modified_count": 0,
+    "collection_count": 1
+  },
+  "second_upsert_changed_payload": {
+    "upserted_count": 0,
+    "matched_count": 1,
+    "modified_count": 1,
+    "collection_count": 1
+  },
+  "proof": {
+    "same_order_id": true,
+    "payload_updated": true,
+    "duplicate_created": false,
+    "collection_count_stable": true,
+    "result": "PASS"
+  },
+  "production_data_modified": false
+}

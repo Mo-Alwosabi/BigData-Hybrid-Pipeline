@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "evidence_file_count": 15,
+  "original_downloads_preserved": true,
+  "files": [
+    {
+      "file": "01_small_router_python_batch.png",
+      "size_bytes": 79247,
+      "sha256": "62296eb2c65507dc983028c9457a04d5d0f9b77f38b0cac7e006c3efd882fa2a"
+    },
+    {
+      "file": "02_large_router_pyspark.png",
+      "size_bytes": 76528,
+      "sha256": "7cf6fd5305e71837b28f982a2b18ea63ce2c254a6fc4779afb0016f60302992e"
+    },
+    {
+      "file": "03a_raw_100k_metadata.png",
+      "size_bytes": 146176,
+      "sha256": "09e74790e32f7ac35860815a8ceff18d6e442106cfa78622e4a9ac893fd7a477"
+    },
+    {
+      "file": "03b_raw_100k_raw_record.png",
+      "size_bytes": 143319,
+      "sha256": "d5edacb2cd12821388ccad4b5c119547e7b49817f3b4101df439c660854e5e12"
+    },
+    {
+      "file": "04_valid_100k_record.png",
+      "size_bytes": 148989,
+      "sha256": "26aa34266f8773f9ecc8bf88d8ce39b1ce08777e4c4515d06b2a5c34e7965b5f"
+    },
+    {
+      "file": "05a_corrected_record_context.png",
+      "size_bytes": 148197,
+      "sha256": "0d77333497d4be55902ebe6ba329551b6436be6f4e99ca0f98987c121c9a196f"
+    },
+    {
+      "file": "05b_corrected_rule_detail.png",
+      "size_bytes": 150398,
+      "sha256": "5cca85fb6314bdb9c4d5b55a82f132dcec39f6a0fe2e2305838038fde4bc7ce8"
+    },
+    {
+      "file": "06a_quarantine_record_context.png",
+      "size_bytes": 165544,
+      "sha256": "90be56b1b3835407a6aa9e85c663b61dd199cac62a12c5fa3e372b570cc7b5dc"
+    },
+    {
+      "file": "06b_quarantine_error_codes_and_details_1.png",
+      "size_bytes": 141198,
+      "sha256": "64511a999e8811d289830eef11a952d6b2acc51a2f59fd9a574cc301b86768d1"
+    },
+    {
+      "file": "06c_quarantine_error_details_2.png",
+      "size_bytes": 162267,
+      "sha256": "f65035f78432e0637d6e8bb566ac45a2deda775ea4f1a08fe7d568840212b599"
+    },
+    {
+      "file": "08_spark_jobs.png",
+      "size_bytes": 65352,
+      "sha256": "474405594d9c94ae8894fcc8cee7d9023180d87da3f9f00976fae4397b764951"
+    },
+    {
+      "file": "09_spark_runtime_console.png",
+      "size_bytes": 97560,
+      "sha256": "9fad9a1d6dc5ea3344d39dc954af72f72cc8bb980329f1cf5a0aa21c16a8d8b2"
+    },
+    {
+      "file": "10a_raw_30m_pyspark_metadata.png",
+      "size_bytes": 145832,
+      "sha256": "7d49977cce54ca29b942f817b6561cee9ec76f42d536694a310d03b077507f02"
+    },
+    {
+      "file": "10b_raw_30m_pyspark_raw_record.png",
+      "size_bytes": 141209,
+      "sha256": "31569d49bba5101dbc405382699d969355b5345ce8a0959413caa53ddb7f2cf6"
+    },
+    {
+      "file": "10_final_collections_overview.png",
+      "size_bytes": 69828,
+      "sha256": "b5336a9cf58ed0cd2211ea14ab701b0eca4138ffa1ff42733e3065d1f5f79aa6"
+    }
+  ]
+}
