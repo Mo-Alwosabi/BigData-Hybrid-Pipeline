@@ -203,7 +203,10 @@ def test_negative_qty_is_derived():
     record["total_amount"] = "17000"
     record["payment_amount"] = "17000"
 
-    result = classify_record(record)
+    result = classify_record(
+        record,
+        negative_qty_policy="derive",
+    )
 
     items = json.loads(
         result["cleaned_record"]

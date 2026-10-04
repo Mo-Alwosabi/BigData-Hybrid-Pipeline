@@ -37,6 +37,7 @@ ERR_STATUS_UNKNOWN = "STATUS_UNKNOWN"
 ERR_ITEM_QUANTITY_INVALID = "ITEM_QUANTITY_INVALID"
 ERR_ITEM_COMPONENTS_CONFLICT = "ITEM_COMPONENTS_CONFLICT"
 ERR_TOTAL_UNKNOWN = "TOTAL_UNKNOWN_UNRECOVERABLE"
+ERR_ITEM_SKU_MISSING = "MISSING_ITEM_SKU"
 
 
 # ============================================================
@@ -55,6 +56,7 @@ RULE_EMAIL = "EMAIL_REPEATED_SYMBOLS"
 RULE_DATE = "DATE_NORMALIZED"
 RULE_STATUS_SYNONYM = "STATUS_SYNONYM_NORMALIZED"
 RULE_NEGATIVE_QTY = "NEGATIVE_QTY_DERIVED"
+RULE_QTY_STRING = "QTY_AS_STRING_IN_ITEMS"
 RULE_ITEM_TOTAL = "ITEM_TOTAL_DERIVED"
 RULE_ITEM_PRICE_DIRECT = "ITEM_PRICE_DIRECT_DERIVED"
 RULE_ITEM_TOTAL_RESIDUAL = "ITEM_TOTAL_RESIDUAL_DERIVED"
@@ -838,9 +840,23 @@ def item_number(
 
     item[field] = corrected
 
-    for rule_code in numeric_rule_codes(
-        original
+    numeric_codes = numeric_rule_codes(original)
+
+    if (
+        field == "qty"
+        and isinstance(original, str)
+        and not numeric_codes
     ):
+        add_correction(
+            corrections,
+            f"items_json[{index}].{field}",
+            original,
+            corrected,
+            RULE_QTY_STRING,
+            details="Numeric quantity was stored as a string.",
+        )
+
+    for rule_code in numeric_codes:
 
         add_correction(
             corrections,
@@ -851,8 +867,6 @@ def item_number(
         )
 
     return parsed
-
-
 def order_total_corroborates_items(
     items,
     delivery,
@@ -899,6 +913,7 @@ def clean_items(
     delivery,
     order_total,
     payment_amount,
+    negative_qty_policy="quarantine",
 ):
     items = parse_items(
         cleaned,
@@ -951,59 +966,86 @@ def clean_items(
             corrections,
         )
 
-        # Negative quantity.
+        # Missing SKU cannot be inferred safely.
+        if is_blank(item.get("sku")):
+            add_error(
+                errors,
+                ERR_ITEM_SKU_MISSING,
+                f"items_json[{index}].sku",
+                item.get("sku"),
+                "SKU is missing and cannot be safely inferred.",
+            )
+
+        # Negative quantity policy.
         if (
             qty is not None
             and qty < 0
         ):
 
-            candidate = None
+            if negative_qty_policy == "derive":
 
-            if (
-                unit_price is not None
-                and unit_price > 0
-                and item_total is not None
-                and item_total >= 0
-            ):
+                candidate = None
 
-                candidate = (
-                    item_total
-                    / unit_price
-                )
+                if (
+                    unit_price is not None
+                    and unit_price > 0
+                    and item_total is not None
+                    and item_total >= 0
+                ):
+                    candidate = (
+                        item_total
+                        / unit_price
+                    )
 
-            if (
-                positive_integer(candidate)
-                and order_corroborated
-            ):
+                if (
+                    positive_integer(candidate)
+                    and order_corroborated
+                ):
 
-                original_qty = item["qty"]
+                    original_qty = item["qty"]
 
-                qty = candidate
+                    qty = candidate
 
-                item["qty"] = to_number(
-                    candidate
-                )
+                    item["qty"] = to_number(
+                        candidate
+                    )
 
-                add_correction(
-                    corrections,
-                    f"items_json[{index}].qty",
-                    original_qty,
-                    item["qty"],
-                    RULE_NEGATIVE_QTY,
-                    details=(
-                        "Derived as item_total / unit_price "
-                        "and corroborated by order total."
-                    ),
-                )
+                    add_correction(
+                        corrections,
+                        f"items_json[{index}].qty",
+                        original_qty,
+                        item["qty"],
+                        RULE_NEGATIVE_QTY,
+                        details=(
+                            "Derived as item_total / unit_price "
+                            "and corroborated by order total."
+                        ),
+                    )
 
-            else:
+                else:
+
+                    add_error(
+                        errors,
+                        ERR_VALUE_NEGATIVE_AMBIGUOUS,
+                        f"items_json[{index}].qty",
+                        item.get("qty"),
+                        "Negative quantity cannot be resolved safely.",
+                    )
+
+            elif negative_qty_policy == "quarantine":
 
                 add_error(
                     errors,
                     ERR_VALUE_NEGATIVE_AMBIGUOUS,
                     f"items_json[{index}].qty",
                     item.get("qty"),
-                    "Negative quantity cannot be resolved safely.",
+                    "Negative quantity is quarantined by the active policy.",
+                )
+
+            else:
+
+                raise ValueError(
+                    "negative_qty_policy must be 'quarantine' or 'derive'"
                 )
 
         if (
@@ -1307,6 +1349,7 @@ def clean_items(
 def classify_record(
     raw_record,
     duplicate_conflict=False,
+    negative_qty_policy="quarantine",
 ):
     cleaned = copy.deepcopy(
         raw_record
@@ -1429,6 +1472,7 @@ def classify_record(
         delivery,
         order_total,
         payment_amount,
+        negative_qty_policy,
     )
 
     # --------------------------------------------------------
