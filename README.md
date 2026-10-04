@@ -1,548 +1,975 @@
-Hybrid Big Data Pipeline
+# BigData Hybrid Pipeline
 
-A production-oriented hybrid Big Data pipeline for processing large-scale, mixed-quality order data using Python, PySpark, and MongoDB.
+> A production-oriented hybrid Big Data pipeline for ingesting, validating, transforming, querying, aggregating, and serving large-scale mixed-quality order data through MongoDB, PySpark, Python batch processing, scheduled jobs, and FastAPI.
 
-The pipeline automatically selects the appropriate processing engine according to the input file size, ingests source data into a raw layer, performs data-quality validation and correction, detects duplicates, and writes processed records into validated and quarantine collections.
+## Project Overview
 
-Features
-Automatic file-size based engine selection
-Python batch processing for smaller datasets
-PySpark processing for large datasets
-Raw-first data ingestion
-Explicit CSV schema handling
-Data-quality validation
-Automatic data correction
-Quarantine for unrecoverable records
-Duplicate detection
-MongoDB bulk writes
-Business-key based upserts
-Idempotent processing
-Record fingerprinting
-Data lineage tracking
-Processing metadata
-Consistency validation
-Performance measurement
-JSON execution reports
-Large-scale Spark processing
-Architecture
+**BigData Hybrid Pipeline** implements an end-to-end data platform for large and mixed-quality order datasets.
 
-The pipeline follows a hybrid processing architecture.
+The system combines:
 
-Input CSV files are first analyzed by the file router.
+- **Python batch processing** for smaller inputs
+- **PySpark** for large-scale inputs
+- **MongoDB** as the raw, validated, quarantine, and analytical storage layer
+- **Incremental processing** for efficient updates
+- **MongoDB indexes and query execution analysis**
+- **Aggregation reports**
+- **Materialized views**
+- **Scheduled jobs**
+- **FastAPI** as a unified REST API
+- **Reproducible execution and verification reports**
 
-Small files are processed using the Python batch engine.
+The design follows a **raw-first architecture**: source records are preserved before validation and transformation, allowing traceability, auditing, and reprocessing.
 
-Large files are automatically routed to PySpark.
+---
 
-Both processing paths write the original records into the MongoDB raw layer.
+## Architecture
 
-The ELT stage then classifies each record as valid, corrected, or quarantined.
+```mermaid
+flowchart LR
+    A[CSV Input] --> B[File Router]
+    B -->|Small File| C[Python Batch]
+    B -->|Large File| D[PySpark]
+    C --> E[orders_raw]
+    D --> E
+    E --> F[ELT / Data Quality]
+    F --> G{Classification}
+    G --> H[VALID]
+    G --> I[CORRECTED]
+    G --> J[QUARANTINED]
+    H --> K[orders_validated]
+    I --> K
+    J --> L[orders_quarantine]
 
-Validated records are stored in orders_validated.
+    K --> M[Queries & Indexes]
+    K --> N[Aggregation Reports]
+    K --> O[Incremental Change Log]
+    O --> P[Materialized Views]
 
-Unrecoverable records are stored in orders_quarantine.
+    P --> Q[Scheduled Jobs]
+    N --> Q
+    Q --> R[Job Run Logs]
 
-The original records remain available in orders_raw for traceability and reprocessing.
+    K --> S[FastAPI]
+    N --> S
+    P --> S
+    Q --> S
+```
 
-Processing Flow
+### Core processing flow
 
+```text
 Input CSV
-
+   │
+   ▼
 File Router
+   │
+   ├── Python Batch ──┐
+   │                  │
+   └── PySpark ───────┤
+                      ▼
+                 orders_raw
+                      │
+                      ▼
+              ELT / Data Quality
+                      │
+          ┌───────────┼───────────┐
+          ▼           ▼           ▼
+        VALID      CORRECTED   QUARANTINED
+          │           │           │
+          └──────┬────┘           │
+                 ▼                ▼
+        orders_validated   orders_quarantine
+                 │
+       ┌─────────┼─────────┬──────────────┐
+       ▼         ▼         ▼              ▼
+    Queries  Aggregations  MVs      Scheduled Jobs
+       │         │         │              │
+       └─────────┴─────────┴──────┬───────┘
+                                  ▼
+                               FastAPI
+```
 
-Engine Selection
+---
 
-Python Batch or PySpark
+# 1. Processing Engines
 
-orders_raw
+## Automatic Engine Selection
 
-Data Quality Processing
+The router evaluates the input file size and selects the processing engine automatically.
 
-Validation and Correction
+The configured threshold is:
 
-Duplicate Detection
+```text
+200 MB
+```
 
-Classification
+Decision rule:
 
-Valid Records
-
-Corrected Records
-
-Quarantined Records
-
-MongoDB
-
-orders_validated
-
-orders_quarantine
-
-Engine Selection
-
-The pipeline uses a configurable file-size threshold to determine the processing engine.
-
-The configured threshold is 200 MB.
-
-Files larger than the threshold are automatically routed to PySpark.
+```text
+File <= 200 MB  → Python Batch
+File > 200 MB   → PySpark
+```
 
 Example:
 
+```powershell
 python -m src.main --input "path\to\orders.csv"
+```
 
-The router reports the selected engine and the reason for the selection.
+The router reports:
 
-Large-Scale Processing
+- Input path
+- File size
+- Selected engine
+- Routing reason
 
-Large datasets are processed using Apache Spark through PySpark.
+---
 
-The large-data execution path uses Spark 4.0.1 and Scala 2.13.
+## Python Batch Engine
 
-The Spark execution mode is local[*], allowing Spark to use the available local CPU resources.
+The Python path is intended for smaller datasets and uses batched writes to MongoDB.
 
-Large CSV files are read using an explicit String schema.
+Characteristics:
 
-This prevents unwanted schema inference and provides predictable handling of mixed-quality source data.
+- Explicit CSV handling
+- Controlled batch size
+- MongoDB bulk writes
+- Raw-first ingestion
+- Processing metadata
+- Throughput measurement
 
-Large-file caching is disabled to avoid unnecessary memory consumption.
+---
 
-Raw-First Data Architecture
+## PySpark Engine
 
-The pipeline follows a raw-first architecture.
+Large inputs are processed through **Apache Spark / PySpark**.
 
-Incoming records are first written to the orders_raw collection.
+The large-scale execution path uses:
 
-The raw layer preserves the original record together with ingestion metadata.
+- PySpark **4.2.0**
+- Spark local execution: `local[*]`
+- Explicit string-oriented CSV schema handling
+- Partition-aware processing
+- MongoDB Spark Connector
 
-Each raw record can contain:
+Large CSV input does not rely on automatic schema inference. This provides predictable handling of mixed-quality source values.
 
-run_id
+---
 
-source_file
+# 2. Raw-First Data Architecture
 
-source_path
+All ingestion paths write source records to:
 
-source_row_number
-
-ingested_at
-
-engine_used
-
-raw_record
-
-This provides traceability between the original source data and all subsequent processing stages.
-
-Data Quality Classification
-
-Every source record is classified into one of three quality states.
-
-VALID
-
-The record satisfies the defined quality rules without requiring modifications.
-
-CORRECTED
-
-The record contains recoverable data-quality problems that can be safely corrected.
-
-QUARANTINED
-
-The record contains an unrecoverable or conflicting data-quality problem and is moved to the quarantine collection.
-
-The classification process ensures that problematic records are not silently discarded.
-
-Data Correction
-
-The pipeline automatically applies defined correction rules when enough information is available to safely repair a record.
-
-Supported correction categories include:
-
-Arabic digit normalization
-Decimal separator normalization
-Phone number normalization
-Date normalization
-Email normalization
-Whitespace trimming
-Order total recalculation
-Currency normalization
-Thousands separator normalization
-Known price-word conversion
-Item total derivation
-Item price derivation
-Negative quantity correction
-Status synonym normalization
-
-Every correction is recorded in the processed document.
-
-The original raw data remains available in the raw layer.
-
-Quarantine
-
-Records that cannot be safely repaired are stored in orders_quarantine.
-
-Quarantine records preserve:
-
-Original raw record
-Cleaned preview
-Corrections
-Error codes
-Error details
-Source run ID
-Source file
-Source path
-Source row number
-Raw ingestion timestamp
-Processing run ID
-Processing timestamps
-
-This allows failed records to be inspected and potentially reprocessed later.
-
-Error Detection
-
-The pipeline tracks explicit quality error codes.
-
-Examples include:
-
-MISSING_ORDER_ID
-
-MISSING_CUSTOMER_ID
-
-EMAIL_INVALID_UNRECOVERABLE
-
-PHONE_INVALID_UNRECOVERABLE
-
-CORRUPTED_ITEMS_JSON
-
-EMPTY_ITEMS
-
-TOTAL_UNKNOWN_UNRECOVERABLE
-
-INVALID_IMPOSSIBLE_DATE
-
-STATUS_UNKNOWN
-
-CURRENCY_UNKNOWN
-
-DUPLICATE_ORDER_ID
-
-MULTIPLE_CONFLICTING_ERRORS
-
-Error statistics are included in the generated reports.
-
-Duplicate Detection
-
-Duplicate order IDs are detected before the final classification stage.
-
-The pipeline identifies duplicate groups and duplicate records.
-
-Conflicting duplicate order IDs can be quarantined instead of being incorrectly inserted as separate business entities.
-
-This protects the validated collection from conflicting business-key records.
-
-MongoDB Collections
-
-The pipeline uses three primary MongoDB collections.
-
+```text
 orders_raw
+```
 
-Contains the original ingested source records and ingestion metadata.
+before quality processing.
 
-orders_validated
+Raw records preserve the original source payload together with ingestion metadata such as:
 
-Contains records classified as valid or corrected.
-
-orders_quarantine
-
-Contains records that cannot safely be validated.
-
-Upsert Strategy
-
-The validated collection uses order_id as the primary business key.
-
-MongoDB upsert operations are used to insert new records or update existing records.
-
-This prevents duplicate business entities from being created when the same order is processed multiple times.
-
-Bulk unordered writes are used to improve MongoDB write performance.
-
-Idempotent Processing
-
-The pipeline supports idempotent processing.
-
-Records are assigned stable fingerprints based on their relevant data state.
-
-If an existing record has the same fingerprint, the record is treated as unchanged.
-
-If the business key already exists but the payload changes, the existing document is updated rather than creating another document.
-
-The project includes an isolated upsert/update verification demonstrating that the same order ID can be updated without creating a duplicate document.
-
-Data Lineage
-
-Validated records contain lineage information connecting them to their original raw source.
-
-Lineage information includes:
-
-raw_run_id
-
+```text
+run_id
 source_file
-
 source_path
-
 source_row_number
-
-raw_ingested_at
-
+ingested_at
 engine_used
+raw_record
+```
 
-Processing metadata also includes:
+This creates a traceable lineage chain:
 
+```text
+Source File
+    ↓
+Raw Record
+    ↓
+Validated / Corrected / Quarantined Record
+```
+
+The raw layer remains available for auditing and reprocessing.
+
+---
+
+# 3. Data Quality Processing
+
+Every record is classified into one of three quality states.
+
+| State | Meaning |
+|---|---|
+| `valid` | The record satisfies the defined quality rules without modification |
+| `corrected` | Recoverable quality problems were repaired safely |
+| `quarantined` | The record contains an unrecoverable or conflicting problem |
+
+### Correction capabilities
+
+The pipeline supports correction categories including:
+
+- Arabic digit normalization
+- Decimal separator normalization
+- Phone normalization
+- Date normalization
+- Email normalization
+- Whitespace trimming
+- Order-total recalculation
+- Currency normalization
+- Thousands-separator normalization
+- Known price-word conversion
+- Item-total derivation
+- Item-price derivation
+- Negative-quantity correction
+- Status synonym normalization
+
+Each applied correction is recorded in the processed document.
+
+---
+
+# 4. Quarantine and Error Handling
+
+Unrecoverable records are written to:
+
+```text
+orders_quarantine
+```
+
+Instead of silently dropping bad data, the pipeline preserves the failed record and its processing context.
+
+Quarantine records can contain:
+
+- Original raw record
+- Cleaned preview
+- Corrections
+- Error codes
+- Error details
+- Source run ID
+- Source file/path
+- Source row number
+- Raw ingestion timestamp
+- Processing run ID
+- Processing timestamps
+
+Representative error codes include:
+
+```text
+MISSING_ORDER_ID
+MISSING_CUSTOMER_ID
+EMAIL_INVALID_UNRECOVERABLE
+PHONE_INVALID_UNRECOVERABLE
+CORRUPTED_ITEMS_JSON
+EMPTY_ITEMS
+TOTAL_UNKNOWN_UNRECOVERABLE
+INVALID_IMPOSSIBLE_DATE
+STATUS_UNKNOWN
+CURRENCY_UNKNOWN
+DUPLICATE_ORDER_ID
+MULTIPLE_CONFLICTING_ERRORS
+```
+
+---
+
+# 5. Duplicate Detection and Idempotency
+
+The validated collection uses:
+
+```text
+order_id
+```
+
+as the business key.
+
+MongoDB upserts ensure that reprocessing an existing business entity does not create a second document.
+
+The pipeline also uses stable record fingerprints.
+
+Processing behavior:
+
+```text
+Same business key + same fingerprint
+        → unchanged
+
+Same business key + changed payload
+        → update existing record
+
+New business key
+        → insert new record
+```
+
+This supports idempotent execution and safe reprocessing.
+
+---
+
+# 6. Data Lineage
+
+Validated records retain lineage information connecting them to the source ingestion run.
+
+Typical lineage fields:
+
+```text
+raw_run_id
+source_file
+source_path
+source_row_number
+raw_ingested_at
+engine_used
+```
+
+Processing metadata includes:
+
+```text
 last_processing_run_id
-
 first_processed_at
-
 last_updated_at
+```
 
-This allows processed records to be traced back to their source ingestion run.
+This makes individual records traceable back to their original source.
 
-Consistency Validation
+---
 
-The pipeline performs multiple consistency checks before completing a processing run.
+# 7. MongoDB Storage Model
 
-The primary classification relationship is:
+### Primary collections
 
-Raw Records = Valid Records + Corrected Records + Quarantined Records
+| Collection | Purpose |
+|---|---|
+| `orders_raw` | Original source records plus ingestion metadata |
+| `orders_validated` | Valid and corrected business records |
+| `orders_quarantine` | Unrecoverable or conflicting records |
 
-The pipeline also validates:
+### Final-stage analytical collections
 
-Raw record count
-Classified record count
-Validated collection count
-Quarantine count
-MongoDB upsert counts
-Duplicate statistics
-Processing consistency
-Write consistency
+| Collection | Purpose |
+|---|---|
+| `daily_sales_summary` | Materialized daily sales summary |
+| `top_products_summary` | Materialized product-level sales summary |
+| `scheduled_job_runs` | Execution log for scheduled jobs |
 
-These checks provide an additional integrity layer around the data-processing workflow.
+Incremental state and change tracking are stored separately to support efficient materialized-view refreshes.
 
-Large Dataset Results
+---
 
-The large dataset contains 30,000,000 records.
+# 8. Indexes and Query Optimization
 
-The input file size is approximately 12.65 GB.
+The final project includes practical indexes on `orders_validated`.
 
-The recorded large-scale classification contains:
+### Key indexes
 
-20,994,411 valid records
+```text
+uq_orders_validated_order_id
+ix_validated_quality_status
+ix_validated_city
+ix_validated_status
+ix_validated_city_status
+```
 
-6,501,781 corrected records
+The final index:
 
-2,503,808 quarantined records
+```text
+(city, status)
+```
 
-The classification equation is:
+is a **compound index**.
 
-20,994,411 + 6,501,781 + 2,503,808 = 30,000,000
+### Query set
 
-The large-file Spark ingestion stage achieved approximately 125,318 records per second in the recorded execution.
+Five independently runnable practical queries are implemented:
 
-The Spark input used 99 partitions and the output used 99 partitions.
+```text
+by_city
+by_status
+by_city_status
+by_customer
+by_date_range
+```
 
-Performance
+Each query can be accessed through the API.
 
-The project records execution performance for both processing engines.
+---
 
-Performance information includes:
+## Recorded `executionStats` Evidence
 
-Total execution time
-Records processed
-Throughput
-Input partitions
-Output partitions
-MongoDB write time
+The following measurements were collected on the project dataset.
 
-This allows the two processing approaches to be evaluated using measurable execution results.
+| Query | Before: docs examined | After: docs examined | Before: time | After: time |
+|---|---:|---:|---:|---:|
+| City = تعز | 27,496,497 | 2,750,556 | ~25.5 s | ~19.9 s |
+| Status = مؤكد | 27,496,497 | 4,582,124 | ~24.1 s | ~19.4 s |
+| City + Status | 27,496,497 | 458,988 | ~25.8 s | ~20.9 s |
 
-Reports
+The compound query uses the compound index:
 
-The reports directory contains execution and verification artifacts.
+```text
+ix_validated_city_status
+```
 
-Important reports include:
+with an `IXSCAN` followed by document fetch.
 
-classification_dry_run.json
+The primary optimization effect is the large reduction in documents examined:
 
-elt_write_report.json
+```text
+Full collection scan
+        ↓
+Index-assisted scan
+        ↓
+Only matching documents fetched
+```
 
-elt_write_report_final_idempotency.json
+Wall-clock execution time remains influenced by the number of documents returned, storage I/O, and the cost of fetching large result sets.
 
-elt_write_report_first_run.json
+---
 
-elt_write_report_large_30m_final.json
+# 9. Aggregation Reports
 
-final_compliance_audit.json
+The project contains five independently runnable aggregation reports.
 
-final_compliance_audit.md
+### Implemented reports
 
-final_verification.json
+```text
+sales_by_city
+top_customers
+sales_by_status
+sales_by_payment_method
+sales_by_delivery_type
+```
 
-results.json
+Each report:
 
-results.md
+1. Runs directly against actual MongoDB data.
+2. Uses a MongoDB aggregation pipeline.
+3. Produces a named report.
+4. Can be executed independently.
+5. Returns structured results suitable for API consumption or report generation.
 
-spark_large_run.json
+---
 
-spark_large_run_final.json
+# 10. Incremental Processing
 
-spark_loader_test.json
+The project implements incremental updates rather than rebuilding analytical state from scratch after every change.
 
-upsert_update_proof.json
+The incremental mechanism tracks:
 
-These reports provide machine-readable evidence of processing results, data-quality classification, performance, MongoDB writes, and consistency checks.
+- Processed operation identifiers
+- Record changes
+- Watermarks
+- Inserted documents
+- Updated documents
+- Unchanged documents
 
-Project Structure
+A repeated operation is detected and does not get applied twice.
 
-BigData_Hybrid_Pipeline
+This provides:
 
-config
+```text
+Idempotent Incremental Processing
+```
 
-settings.py
+Example behavior:
 
-src
+```text
+First application:
+inserted = 1
+updated  = 1
 
-main.py
+Same operation replayed:
+inserted = 0
+updated  = 0
+unchanged = 2
+```
 
-elt_pipeline.py
+---
 
-reports
+# 11. Materialized Views
 
-classification_dry_run.json
+Two materialized views are implemented.
 
-elt_write_report.json
+### `daily_sales_summary`
 
-elt_write_report_final_idempotency.json
+Provides daily:
 
-elt_write_report_first_run.json
+- Order count
+- Sales totals
 
-elt_write_report_large_30m_final.json
+### `top_products_summary`
 
-final_compliance_audit.json
+Provides product-level:
 
-final_compliance_audit.md
+- Quantity
+- Sales totals
 
-final_verification.json
+The materialized views are maintained incrementally using a watermark/change-log approach.
 
-results.json
+### Initial build
 
-results.md
+The recorded initial build generated:
 
-spark_large_run.json
+```text
+daily_sales_summary → 121 day groups
+top_products_summary → 6 products
+```
 
-spark_large_run_final.json
+### Incremental refresh
 
-spark_loader_test.json
+Refresh command:
 
-upsert_update_proof.json
+```powershell
+python -m src.materialized_views --refresh
+```
 
-requirements.txt
+A refresh processes only records newer than the stored watermark and applies inserts/updates to the materialized state.
 
-README.md
+This avoids rebuilding the full materialized views on every refresh.
 
-Installation
+---
 
-Clone the repository.
+# 12. Scheduled Jobs
 
-Install Python 3.12 or later.
+Two scheduled jobs are implemented.
 
-Install a compatible Java JDK.
+| Job | Schedule | Responsibility |
+|---|---|---|
+| `refresh_materialized_views` | 02:00 | Incrementally refresh analytical materialized views |
+| `generate_daily_sales_report` | 02:30 | Generate the daily sales report |
 
-Install MongoDB.
+Job execution is persisted in:
 
-Create and activate a Python virtual environment.
+```text
+scheduled_job_runs
+```
 
-Install the project dependencies using:
+Each execution records:
 
-pip install -r requirements.txt
+```text
+start time
+end time
+duration
+status
+result
+error details
+```
 
-Verify Java installation using:
+Jobs can also be triggered manually through the API.
 
-java -version
+---
 
-Verify Python installation using:
+# 13. FastAPI
 
-python --version
+FastAPI provides the unified application interface.
 
-Configuration
+Start the API with:
 
-MongoDB configuration is controlled through the project configuration.
+```powershell
+python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
+```
 
-The main configuration file is:
+Interactive API documentation is available at:
 
-config/settings.py
+```text
+http://127.0.0.1:8000/docs
+```
 
-The MongoDB URI can be configured using the MONGO_URI environment variable.
+OpenAPI specification:
 
-The database name can be configured using the MONGO_DATABASE environment variable.
+```text
+http://127.0.0.1:8000/openapi.json
+```
 
-Example values:
+---
 
-MONGO_URI=mongodb://127.0.0.1:27017
+## API Endpoints
 
-MONGO_DATABASE=bigdata_midterm
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/health` | Service health check |
+| `POST` | `/ingest` | Route and ingest source data through the existing pipeline |
+| `POST` | `/indexes` | Create / verify project indexes |
+| `GET` | `/queries` | List available queries |
+| `GET` | `/queries/{name}` | Execute a named query |
+| `GET` | `/aggregations` | List available aggregation reports |
+| `GET` | `/aggregations/{name}` | Execute a named aggregation |
+| `POST` | `/refresh-mv` | Refresh materialized views incrementally |
+| `GET` | `/jobs` | List scheduled jobs |
+| `POST` | `/jobs/{name}/run` | Run a scheduled job manually |
 
-Running the Pipeline
+### Important ingestion design
 
-To run automatic engine selection:
+`POST /ingest` reuses the same routing and processing path used by the command-line pipeline.
 
-python -m src.main --input "path\to\orders.csv"
+The API does **not** introduce a separate ingestion implementation.
 
-The system automatically determines whether Python or PySpark should process the input.
+---
 
-To run raw ingestion only:
+# 14. Example API Usage
 
-python -m src.main --input "path\to\orders.csv" --raw-only
+### Health check
 
-This performs the raw ingestion stage without starting the ELT processing stage.
+```powershell
+Invoke-RestMethod "http://127.0.0.1:8000/health"
+```
 
-To process a specific raw run:
+### List queries
 
-python -m src.elt_pipeline --raw-run-id "<RAW_RUN_ID>"
+```powershell
+Invoke-RestMethod "http://127.0.0.1:8000/queries"
+```
 
-For an explicitly selected large production run:
+### Execute a city query
 
-python -m src.elt_pipeline --raw-run-id "<RAW_RUN_ID>" --skip-dry-run-contract
+```powershell
+Invoke-RestMethod "http://127.0.0.1:8000/queries/by_city?city=تعز&limit=5"
+```
 
-Technology Stack
+### Execute a compound query
 
-Python
+```powershell
+Invoke-RestMethod "http://127.0.0.1:8000/queries/by_city_status?city=تعز&status=مؤكد&limit=5"
+```
 
-PySpark
+### Run an aggregation
 
-Apache Spark
+```powershell
+Invoke-RestMethod "http://127.0.0.1:8000/aggregations/sales_by_city"
+```
 
+### Refresh materialized views
+
+```powershell
+Invoke-RestMethod -Method POST "http://127.0.0.1:8000/refresh-mv"
+```
+
+### Run a scheduled job
+
+```powershell
+Invoke-RestMethod -Method POST "http://127.0.0.1:8000/jobs/refresh_materialized_views/run"
+```
+
+---
+
+# 15. Large-Scale Recorded Execution
+
+The recorded large dataset contains:
+
+```text
+30,000,000 records
+≈ 12.65 GB input
+```
+
+Recorded classification:
+
+| Classification | Records |
+|---|---:|
+| Valid | 20,994,411 |
+| Corrected | 6,501,781 |
+| Quarantined | 2,503,808 |
+| **Total** | **30,000,000** |
+
+Consistency equation:
+
+```text
+20,994,411
++ 6,501,781
++ 2,503,808
+= 30,000,000
+```
+
+Recorded large-file Spark ingestion throughput:
+
+```text
+≈ 125,318 records/second
+```
+
+Recorded Spark partition counts:
+
+```text
+Input partitions  = 99
+Output partitions = 99
+```
+
+These are recorded execution results, not hardcoded runtime assumptions.
+
+---
+
+# 16. Performance and Verification
+
+Execution reports capture metrics such as:
+
+- Total execution time
+- Records processed
+- Throughput
+- Input partitions
+- Output partitions
+- MongoDB write time
+- Insert counts
+- Update counts
+- Unchanged counts
+- Duplicate statistics
+- Quality classification statistics
+
+This provides measurable evidence rather than relying only on successful process completion.
+
+---
+
+# 17. Project Structure
+
+```text
+BigData_Hybrid_Pipeline/
+│
+├── config/
+│   └── settings.py
+│
+├── data/
+│   ├── input/
+│   └── samples/
+│
+├── docs/
+│
+├── reports/
+│   ├── classification_dry_run.json
+│   ├── elt_write_report.json
+│   ├── elt_write_report_final_idempotency.json
+│   ├── elt_write_report_first_run.json
+│   ├── elt_write_report_large_30m_final.json
+│   ├── final_compliance_audit.json
+│   ├── final_compliance_audit.md
+│   ├── final_verification.json
+│   ├── results.json
+│   ├── results.md
+│   ├── scheduled_daily_sales_report.json
+│   ├── spark_large_run.json
+│   ├── spark_large_run_final.json
+│   ├── spark_loader_test.json
+│   └── upsert_update_proof.json
+│
+├── src/
+│   ├── main.py
+│   ├── elt_pipeline.py
+│   ├── aggregation_reports.py
+│   ├── incremental_loader.py
+│   ├── materialized_views.py
+│   ├── scheduled_jobs.py
+│   └── api.py
+│
+├── tests/
+│
+├── .gitignore
+├── example.env
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# 18. Installation
+
+## Prerequisites
+
+Recommended environment:
+
+```text
+Python 3.12+
+Java JDK
 MongoDB
+Apache Spark / PySpark 4.2.0
+```
 
-PyMongo
+Create a virtual environment:
 
-MongoDB Spark Connector
+```powershell
+python -m venv .venv
+```
 
-PowerShell
+Activate it:
 
-JSON
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-Design Principles
+Install dependencies:
 
-The project is designed around the following principles:
+```powershell
+pip install -r requirements.txt
+```
 
-Hybrid processing for different dataset sizes.
-Raw-first data ingestion.
-Safe handling of mixed-quality data.
-Explicit data-quality classification.
-Recoverable data correction.
-Quarantine instead of silent deletion.
-Duplicate detection.
-Business-key based upserts.
-Idempotent processing.
-Record fingerprinting.
-Complete data lineage.
-Bounded memory usage.
-Efficient bulk database writes.
-Consistency validation.
-Reproducible execution reports.
-Performance measurement.
+Verify Python:
+
+```powershell
+python --version
+```
+
+Verify Java:
+
+```powershell
+java -version
+```
+
+Verify MongoDB connectivity through the project's MongoDB setup before running ingestion.
+
+---
+
+# 19. Configuration
+
+Configuration is centralized in:
+
+```text
+config/settings.py
+```
+
+Environment variables include:
+
+```env
+MONGO_URI=mongodb://127.0.0.1:27017
+MONGO_DATABASE=bigdata_midterm
+SMALL_FILE_THRESHOLD_MB=200
+BATCH_SIZE=5000
+SPARK_MASTER=local[*]
+```
+
+Do not commit credentials, private endpoints, or other sensitive configuration values.
+
+Use:
+
+```text
+example.env
+```
+
+as the safe configuration template.
+
+---
+
+# 20. Running the Pipeline
+
+### Automatic routing and ingestion
+
+```powershell
+python -m src.main --input "path\to\orders.csv"
+```
+
+### Raw ingestion only
+
+```powershell
+python -m src.main --input "path\to\orders.csv" --raw-only
+```
+
+### Route inspection without ingestion
+
+```powershell
+python -m src.main --input "path\to\orders.csv" --dry-route
+```
+
+### Process a specific raw run
+
+```powershell
+python -m src.elt_pipeline --raw-run-id "<RAW_RUN_ID>"
+```
+
+### Production large-data ELT path
+
+```powershell
+python -m src.elt_pipeline --raw-run-id "<RAW_RUN_ID>" --skip-dry-run-contract
+```
+
+---
+
+# 21. Reproducibility
+
+The project is designed so that the workflow can be reproduced from the repository documentation.
+
+A clean execution follows:
+
+```text
+Install dependencies
+      ↓
+Configure environment
+      ↓
+Verify MongoDB / Java / Python
+      ↓
+Run ingestion
+      ↓
+Run ELT
+      ↓
+Create indexes
+      ↓
+Run aggregation reports
+      ↓
+Build / refresh materialized views
+      ↓
+Run scheduled jobs
+      ↓
+Start FastAPI
+      ↓
+Verify API endpoints
+```
+
+Results and verification artifacts are stored under:
+
+```text
+reports/
+```
+
+---
+
+# 22. Design Principles
+
+The implementation follows these principles:
+
+1. **Hybrid processing** — choose the right engine for the input scale.
+2. **Raw-first ingestion** — preserve source data before transformation.
+3. **Explicit data-quality classification** — valid, corrected, or quarantined.
+4. **Safe correction** — repair records only when correction is defensible.
+5. **Quarantine instead of silent deletion** — preserve problematic data for review.
+6. **Business-key upserts** — use `order_id` to prevent duplicate business entities.
+7. **Idempotency** — repeated processing should not duplicate state.
+8. **Data lineage** — maintain source-to-target traceability.
+9. **Incremental analytics** — update materialized state using changes and watermarks.
+10. **Measured performance** — record throughput, timing, partitions, and write metrics.
+11. **API-first access** — expose core capabilities through a unified FastAPI service.
+12. **Reproducibility** — document commands, configuration, and verification artifacts.
+
+---
+
+# 23. Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python |
+| Small-data processing | Python Batch |
+| Large-data processing | PySpark / Apache Spark |
+| Database | MongoDB |
+| MongoDB client | PyMongo |
+| Spark connectivity | MongoDB Spark Connector |
+| API | FastAPI |
+| API Server | Uvicorn |
+| Configuration | Environment Variables + `config/settings.py` |
+| CLI / Operations | PowerShell |
+| Reporting | JSON / Markdown |
+
+---
+
+# 24. Final Project Deliverables
+
+The final implementation covers the project requirements through:
+
+```text
+✓ Practical MongoDB queries
+✓ Query indexes
+✓ Compound index
+✓ executionStats before/after analysis
+✓ Five aggregation reports
+✓ Two materialized views
+✓ Incremental materialized-view refresh
+✓ Two scheduled jobs
+✓ Persistent job execution logs
+✓ Unified FastAPI API
+✓ Swagger / OpenAPI documentation
+✓ Reusable ingestion route
+✓ README documentation
+✓ Dependency specification
+✓ Safe environment template
+✓ Verification and execution reports
+```
+
+---
+
+## License
+
+This project is an academic Big Data implementation developed as part of a university final project.

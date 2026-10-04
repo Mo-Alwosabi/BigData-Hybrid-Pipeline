@@ -1,0 +1,614 @@
+{
+  "report": "daily_sales_summary",
+  "generated_at": "2026-10-04 18:16:56.638145+00:00",
+  "days": 121,
+  "total_orders": 27496496,
+  "total_sales": 7161030935500.0,
+  "daily_rows": [
+    {
+      "order_count": 86252,
+      "total_sales": 22417353500,
+      "day": "2025-05-01"
+    },
+    {
+      "order_count": 228814,
+      "total_sales": 59490713000,
+      "day": "2025-04-30"
+    },
+    {
+      "order_count": 229357,
+      "total_sales": 59579922500,
+      "day": "2025-04-29"
+    },
+    {
+      "order_count": 229622,
+      "total_sales": 60059285500,
+      "day": "2025-04-28"
+    },
+    {
+      "order_count": 229554,
+      "total_sales": 59852952000,
+      "day": "2025-04-27"
+    },
+    {
+      "order_count": 229418,
+      "total_sales": 59823791000,
+      "day": "2025-04-26"
+    },
+    {
+      "order_count": 228950,
+      "total_sales": 59476187500,
+      "day": "2025-04-25"
+    },
+    {
+      "order_count": 229154,
+      "total_sales": 59738152500,
+      "day": "2025-04-24"
+    },
+    {
+      "order_count": 228144,
+      "total_sales": 59536801000,
+      "day": "2025-04-23"
+    },
+    {
+      "order_count": 228773,
+      "total_sales": 59871394500,
+      "day": "2025-04-22"
+    },
+    {
+      "order_count": 228719,
+      "total_sales": 59543726000,
+      "day": "2025-04-21"
+    },
+    {
+      "order_count": 229705,
+      "total_sales": 59861466000,
+      "day": "2025-04-20"
+    },
+    {
+      "order_count": 229981,
+      "total_sales": 60074556000,
+      "day": "2025-04-19"
+    },
+    {
+      "order_count": 229340,
+      "total_sales": 59959756000,
+      "day": "2025-04-18"
+    },
+    {
+      "order_count": 229073,
+      "total_sales": 59643523500,
+      "day": "2025-04-17"
+    },
+    {
+      "order_count": 229523,
+      "total_sales": 59432376000,
+      "day": "2025-04-16"
+    },
+    {
+      "order_count": 229406,
+      "total_sales": 59731781500,
+      "day": "2025-04-15"
+    },
+    {
+      "order_count": 228180,
+      "total_sales": 59528186000,
+      "day": "2025-04-14"
+    },
+    {
+      "order_count": 229896,
+      "total_sales": 59758535500,
+      "day": "2025-04-13"
+    },
+    {
+      "order_count": 228962,
+      "total_sales": 59504550500,
+      "day": "2025-04-12"
+    },
+    {
+      "order_count": 229528,
+      "total_sales": 59862363500,
+      "day": "2025-04-11"
+    },
+    {
+      "order_count": 228713,
+      "total_sales": 59404558000,
+      "day": "2025-04-10"
+    },
+    {
+      "order_count": 229022,
+      "total_sales": 59497941500,
+      "day": "2025-04-09"
+    },
+    {
+      "order_count": 228042,
+      "total_sales": 59429824500,
+      "day": "2025-04-08"
+    },
+    {
+      "order_count": 228819,
+      "total_sales": 59384924000,
+      "day": "2025-04-07"
+    },
+    {
+      "order_count": 229196,
+      "total_sales": 59729997500,
+      "day": "2025-04-06"
+    },
+    {
+      "order_count": 229520,
+      "total_sales": 59819685500,
+      "day": "2025-04-05"
+    },
+    {
+      "order_count": 229578,
+      "total_sales": 59563632500,
+      "day": "2025-04-04"
+    },
+    {
+      "order_count": 229496,
+      "total_sales": 59738502500,
+      "day": "2025-04-03"
+    },
+    {
+      "order_count": 228045,
+      "total_sales": 59627042500,
+      "day": "2025-04-02"
+    },
+    {
+      "order_count": 227733,
+      "total_sales": 59214433000,
+      "day": "2025-04-01"
+    },
+    {
+      "order_count": 229088,
+      "total_sales": 59466431000,
+      "day": "2025-03-31"
+    },
+    {
+      "order_count": 228765,
+      "total_sales": 59695221000,
+      "day": "2025-03-30"
+    },
+    {
+      "order_count": 229040,
+      "total_sales": 59559790000,
+      "day": "2025-03-29"
+    },
+    {
+      "order_count": 229004,
+      "total_sales": 59627129000,
+      "day": "2025-03-28"
+    },
+    {
+      "order_count": 229327,
+      "total_sales": 59790244500,
+      "day": "2025-03-27"
+    },
+    {
+      "order_count": 230542,
+      "total_sales": 60230006000,
+      "day": "2025-03-26"
+    },
+    {
+      "order_count": 229709,
+      "total_sales": 59830950000,
+      "day": "2025-03-25"
+    },
+    {
+      "order_count": 229279,
+      "total_sales": 59973480500,
+      "day": "2025-03-24"
+    },
+    {
+      "order_count": 229337,
+      "total_sales": 59760333000,
+      "day": "2025-03-23"
+    },
+    {
+      "order_count": 228170,
+      "total_sales": 59316557000,
+      "day": "2025-03-22"
+    },
+    {
+      "order_count": 228436,
+      "total_sales": 59411126500,
+      "day": "2025-03-21"
+    },
+    {
+      "order_count": 228969,
+      "total_sales": 59723823000,
+      "day": "2025-03-20"
+    },
+    {
+      "order_count": 229367,
+      "total_sales": 59739579500,
+      "day": "2025-03-19"
+    },
+    {
+      "order_count": 228516,
+      "total_sales": 59429984500,
+      "day": "2025-03-18"
+    },
+    {
+      "order_count": 228610,
+      "total_sales": 59473768000,
+      "day": "2025-03-17"
+    },
+    {
+      "order_count": 228205,
+      "total_sales": 59300465500,
+      "day": "2025-03-16"
+    },
+    {
+      "order_count": 229313,
+      "total_sales": 59939762500,
+      "day": "2025-03-15"
+    },
+    {
+      "order_count": 229272,
+      "total_sales": 59660013000,
+      "day": "2025-03-14"
+    },
+    {
+      "order_count": 230172,
+      "total_sales": 60111150500,
+      "day": "2025-03-13"
+    },
+    {
+      "order_count": 228842,
+      "total_sales": 59634440000,
+      "day": "2025-03-12"
+    },
+    {
+      "order_count": 229024,
+      "total_sales": 59628157500,
+      "day": "2025-03-11"
+    },
+    {
+      "order_count": 229765,
+      "total_sales": 59840553000,
+      "day": "2025-03-10"
+    },
+    {
+      "order_count": 229358,
+      "total_sales": 59562744500,
+      "day": "2025-03-09"
+    },
+    {
+      "order_count": 228061,
+      "total_sales": 59271527000,
+      "day": "2025-03-08"
+    },
+    {
+      "order_count": 228227,
+      "total_sales": 59382030500,
+      "day": "2025-03-07"
+    },
+    {
+      "order_count": 229134,
+      "total_sales": 59543065000,
+      "day": "2025-03-06"
+    },
+    {
+      "order_count": 229400,
+      "total_sales": 59752996500,
+      "day": "2025-03-05"
+    },
+    {
+      "order_count": 229007,
+      "total_sales": 59658147500,
+      "day": "2025-03-04"
+    },
+    {
+      "order_count": 228846,
+      "total_sales": 59500486500,
+      "day": "2025-03-03"
+    },
+    {
+      "order_count": 228568,
+      "total_sales": 59517848500,
+      "day": "2025-03-02"
+    },
+    {
+      "order_count": 228955,
+      "total_sales": 59433679000,
+      "day": "2025-03-01"
+    },
+    {
+      "order_count": 229688,
+      "total_sales": 59694949500,
+      "day": "2025-02-28"
+    },
+    {
+      "order_count": 229269,
+      "total_sales": 59623724500,
+      "day": "2025-02-27"
+    },
+    {
+      "order_count": 229724,
+      "total_sales": 59673451000,
+      "day": "2025-02-26"
+    },
+    {
+      "order_count": 229071,
+      "total_sales": 59704566000,
+      "day": "2025-02-25"
+    },
+    {
+      "order_count": 229383,
+      "total_sales": 59789643500,
+      "day": "2025-02-24"
+    },
+    {
+      "order_count": 229359,
+      "total_sales": 59872604500,
+      "day": "2025-02-23"
+    },
+    {
+      "order_count": 229382,
+      "total_sales": 59843662000,
+      "day": "2025-02-22"
+    },
+    {
+      "order_count": 229048,
+      "total_sales": 59982659500,
+      "day": "2025-02-21"
+    },
+    {
+      "order_count": 229866,
+      "total_sales": 59813279000,
+      "day": "2025-02-20"
+    },
+    {
+      "order_count": 229678,
+      "total_sales": 60027346500,
+      "day": "2025-02-19"
+    },
+    {
+      "order_count": 228885,
+      "total_sales": 60007890000,
+      "day": "2025-02-18"
+    },
+    {
+      "order_count": 228999,
+      "total_sales": 59410022000,
+      "day": "2025-02-17"
+    },
+    {
+      "order_count": 229753,
+      "total_sales": 59701523000,
+      "day": "2025-02-16"
+    },
+    {
+      "order_count": 229341,
+      "total_sales": 59644829500,
+      "day": "2025-02-15"
+    },
+    {
+      "order_count": 229941,
+      "total_sales": 59962962500,
+      "day": "2025-02-14"
+    },
+    {
+      "order_count": 228776,
+      "total_sales": 59499142000,
+      "day": "2025-02-13"
+    },
+    {
+      "order_count": 229156,
+      "total_sales": 59705408000,
+      "day": "2025-02-12"
+    },
+    {
+      "order_count": 229447,
+      "total_sales": 59785997000,
+      "day": "2025-02-11"
+    },
+    {
+      "order_count": 229665,
+      "total_sales": 59917533500,
+      "day": "2025-02-10"
+    },
+    {
+      "order_count": 228494,
+      "total_sales": 59567760500,
+      "day": "2025-02-09"
+    },
+    {
+      "order_count": 229454,
+      "total_sales": 60064624000,
+      "day": "2025-02-08"
+    },
+    {
+      "order_count": 229857,
+      "total_sales": 59941908000,
+      "day": "2025-02-07"
+    },
+    {
+      "order_count": 228354,
+      "total_sales": 59503166000,
+      "day": "2025-02-06"
+    },
+    {
+      "order_count": 229237,
+      "total_sales": 59772196500,
+      "day": "2025-02-05"
+    },
+    {
+      "order_count": 229197,
+      "total_sales": 59598944000,
+      "day": "2025-02-04"
+    },
+    {
+      "order_count": 228605,
+      "total_sales": 59572339500,
+      "day": "2025-02-03"
+    },
+    {
+      "order_count": 229574,
+      "total_sales": 59845429000,
+      "day": "2025-02-02"
+    },
+    {
+      "order_count": 229390,
+      "total_sales": 59740149500,
+      "day": "2025-02-01"
+    },
+    {
+      "order_count": 229818,
+      "total_sales": 59720039000,
+      "day": "2025-01-31"
+    },
+    {
+      "order_count": 228244,
+      "total_sales": 59364487500,
+      "day": "2025-01-30"
+    },
+    {
+      "order_count": 228912,
+      "total_sales": 59848432000,
+      "day": "2025-01-29"
+    },
+    {
+      "order_count": 229162,
+      "total_sales": 59664885000,
+      "day": "2025-01-28"
+    },
+    {
+      "order_count": 229349,
+      "total_sales": 59715605000,
+      "day": "2025-01-27"
+    },
+    {
+      "order_count": 229513,
+      "total_sales": 59878931000,
+      "day": "2025-01-26"
+    },
+    {
+      "order_count": 229075,
+      "total_sales": 59679513500,
+      "day": "2025-01-25"
+    },
+    {
+      "order_count": 229084,
+      "total_sales": 59607282000,
+      "day": "2025-01-24"
+    },
+    {
+      "order_count": 229806,
+      "total_sales": 59802801000,
+      "day": "2025-01-23"
+    },
+    {
+      "order_count": 229360,
+      "total_sales": 59691336000,
+      "day": "2025-01-22"
+    },
+    {
+      "order_count": 229286,
+      "total_sales": 59586021000,
+      "day": "2025-01-21"
+    },
+    {
+      "order_count": 229914,
+      "total_sales": 59872730000,
+      "day": "2025-01-20"
+    },
+    {
+      "order_count": 228670,
+      "total_sales": 59406720000,
+      "day": "2025-01-19"
+    },
+    {
+      "order_count": 229149,
+      "total_sales": 59484727000,
+      "day": "2025-01-18"
+    },
+    {
+      "order_count": 230422,
+      "total_sales": 60216601500,
+      "day": "2025-01-17"
+    },
+    {
+      "order_count": 229435,
+      "total_sales": 59578749500,
+      "day": "2025-01-16"
+    },
+    {
+      "order_count": 229352,
+      "total_sales": 59698514000,
+      "day": "2025-01-15"
+    },
+    {
+      "order_count": 229393,
+      "total_sales": 59761825500,
+      "day": "2025-01-14"
+    },
+    {
+      "order_count": 229174,
+      "total_sales": 59727578500,
+      "day": "2025-01-13"
+    },
+    {
+      "order_count": 228588,
+      "total_sales": 59539881000,
+      "day": "2025-01-12"
+    },
+    {
+      "order_count": 228520,
+      "total_sales": 59565120000,
+      "day": "2025-01-11"
+    },
+    {
+      "order_count": 228872,
+      "total_sales": 59515265000,
+      "day": "2025-01-10"
+    },
+    {
+      "order_count": 229548,
+      "total_sales": 59967138500,
+      "day": "2025-01-09"
+    },
+    {
+      "order_count": 228485,
+      "total_sales": 59389205500,
+      "day": "2025-01-08"
+    },
+    {
+      "order_count": 228394,
+      "total_sales": 59515112500,
+      "day": "2025-01-07"
+    },
+    {
+      "order_count": 229205,
+      "total_sales": 59770815000,
+      "day": "2025-01-06"
+    },
+    {
+      "order_count": 229487,
+      "total_sales": 59670295500,
+      "day": "2025-01-05"
+    },
+    {
+      "order_count": 228549,
+      "total_sales": 59297867000,
+      "day": "2025-01-04"
+    },
+    {
+      "order_count": 229157,
+      "total_sales": 59652629000,
+      "day": "2025-01-03"
+    },
+    {
+      "order_count": 228064,
+      "total_sales": 59422219500,
+      "day": "2025-01-02"
+    },
+    {
+      "order_count": 143093,
+      "total_sales": 37227492000,
+      "day": "2025-01-01"
+    }
+  ]
+}
